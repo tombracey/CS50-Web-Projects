@@ -1,0 +1,39 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h2>{{ username }}</h2>
+
+    <h5>Followers: {{ followers.count }} | Following: {{ following.count }}</h5>
+
+    {% if user != request.user %}
+    {% if following_status %}
+        <form method="POST" action="{% url 'unfollow' user.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Unfollow">
+        </form>
+    {% else %}
+        <form method="POST" action="{% url 'follow' user.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Follow">
+        </form>
+    {% endif %}
+{% endif %}
+
+    <div>
+        {% for post in page %}
+            <p style="margin-bottom: 5px;">{{ post.content }}</p>
+            <p class="created-at">{{ post.created_at }}</p>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if page.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a></li>
+          {% endif %}
+          {% if page.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">Next</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+{% endblock %}

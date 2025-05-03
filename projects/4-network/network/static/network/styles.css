@@ -1,0 +1,41 @@
+/* General Styling */
+
+h1, h2, h3, h4, h5, h6, p, form, button, .pagination {
+    margin-left: 20px;
+}
+
+h5 {
+    margin-top: 20px;
+}
+
+button, .button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.1s ease;
+    font-size: 0.95rem;
+}
+
+button:hover, .button:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* index.html */
+
+.user {
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.created-at {
+    font-style: italic;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.pagination {
+    margin-top: 10px;
+}

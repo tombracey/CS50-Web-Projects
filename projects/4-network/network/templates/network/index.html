@@ -1,0 +1,60 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <h5>New Post</h5>
+        <form action="{% url 'post' %}" method="POST">
+            {% csrf_token %}
+            <textarea name="content" rows="5" cols="50"></textarea><br>
+            <input class="button" type="submit" value="Submit">
+        </form>
+    {% endif %}
+
+    <div>
+        <h5>All Posts</h5>
+        {% for post in page %}
+            <div class="post" data-post-id="{{ post.id }}">
+                <h6 class="user">
+                    <a href="{% url 'profile' id=post.user.id %}">{{ post.user }}</a>
+                </h6>
+    
+                <p class="post-content" id="post-content-{{ post.id }}">{{ post.content }}</p>
+    
+                <p class="created-at">{{ post.created_at }}</p>
+    
+                {% if user.is_authenticated and post.user == user %}
+                    <button class="edit-button" data-post-id="{{ post.id }}">Edit</button>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <button 
+                        id="like-button-{{ post.id }}" 
+                        class="like-button" 
+                        onclick="changeLike({{ post.id }})">
+                        {% if post.id in user_likes %}
+                            Unlike
+                        {% else %}
+                            Like
+                        {% endif %}
+                    </button>
+                    <span id="like-count-{{ post.id }}">{{ post.post_liked.count }}</span> likes
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if page.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a></li>
+          {% endif %}
+          {% if page.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">Next</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+      <script src="{% static 'network/edit.js' %}"></script>
+      <script src="{% static 'network/like.js' %}"></script>
+{% endblock %}
